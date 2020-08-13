@@ -16,7 +16,7 @@ echo "    network_key: GENERATE" >> /home/root/zigbee2mqtt/data/configuration.ya
 echo "" >> /home/root/zigbee2mqtt/data/configuration.yaml
 
 # install and enable service using pm2
-sudo npm install -g pm2
+npm install -g pm2
 pm2 start /usr/local/bin/npm -- start --prefix /home/root/zigbee2mqtt
 pm2 save
 pm2 startup
