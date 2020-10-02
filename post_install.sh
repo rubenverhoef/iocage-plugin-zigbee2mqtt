@@ -2,8 +2,8 @@
 
 ConfigFile="/home/root/zigbee2mqtt/data/configuration.yaml"
 
-function configure_config {
-
+configure_config()
+{
     if [ ! $(grep "^$1" "$ConfigFile") ]; then
         echo "" >> "$ConfigFile"
         echo "$1:" >> "$ConfigFile"
