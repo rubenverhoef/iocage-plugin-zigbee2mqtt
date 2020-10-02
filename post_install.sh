@@ -17,6 +17,6 @@ echo "" >> /home/root/zigbee2mqtt/data/configuration.yaml
 
 # install and enable service using pm2
 npm install -g pm2
-pm2 start /usr/local/bin/npm --name "Zigbee2MQTT" -- start --prefix /home/root/zigbee2mqtt
+pm2 start /usr/local/bin/npm --name "zigbee2mqtt" -- start --prefix /home/root/zigbee2mqtt
 pm2 save
 pm2 startup
