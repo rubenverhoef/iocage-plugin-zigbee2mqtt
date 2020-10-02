@@ -1,5 +1,29 @@
 #!/bin/sh
 
+ConfigFile="/home/root/zigbee2mqtt/data/configuration.yaml"
+
+function configure_config {
+
+    if [ ! $(grep "^$1" "$ConfigFile") ]; then
+        echo "" >> "$ConfigFile"
+        echo "$1:" >> "$ConfigFile"
+    fi
+
+    begin=$(grep -n "^$1" "$ConfigFile" | cut -d ":" -f 1)
+    list=$(grep "^[a-zA-Z]" "$ConfigFile")
+    listbegin=$(echo "$list" | grep -n "^$1" | cut -d ":" -f 1)
+    let "listbegin+=1"
+    word=$(echo "$list" | sed -n -e "$listbegin"p)
+    line=$(sed -n '/'$1'/,/'$word'/p' "$ConfigFile" | grep -n "$2" | cut -d ":" -f 1)
+
+    if [ -z "$line" ]; then
+        sed -i "s!$1:.*!&\n  $2: $3!" "$ConfigFile"
+    else
+        let "line=begin+line-1"
+        sed -i ""$line"s!^  $2:.*!  $2: $3!" "$ConfigFile"
+    fi
+}
+
 # Clone Zigbee2MQTT repository
 git clone https://github.com/Koenkk/zigbee2mqtt.git /home/root/zigbee2mqtt
 
@@ -10,10 +34,7 @@ ln -s /usr/local/bin/python3.7 /usr/local/bin/python
 cd /home/root/zigbee2mqtt && npm ci
 
 # Custom network key
-echo "" >> /home/root/zigbee2mqtt/data/configuration.yaml
-echo "advanced:" >> /home/root/zigbee2mqtt/data/configuration.yaml
-echo "    network_key: GENERATE" >> /home/root/zigbee2mqtt/data/configuration.yaml
-echo "" >> /home/root/zigbee2mqtt/data/configuration.yaml
+configure_config "advanced" "network_key" "GENERATE"
 
 # install and enable service using pm2
 npm install -g pm2
