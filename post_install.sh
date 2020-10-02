@@ -36,6 +36,10 @@ cd /home/root/zigbee2mqtt && npm ci
 # Custom network key
 configure_config "advanced" "network_key" "GENERATE"
 
+# Enable frontend
+configure_config "frontend" "port" "8080"
+configure_config "experimental" "new_api" "true"
+
 # install and enable service using pm2
 npm install -g pm2
 pm2 start /usr/local/bin/npm --name "zigbee2mqtt" -- start --prefix /home/root/zigbee2mqtt
